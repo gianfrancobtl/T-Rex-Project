@@ -59,6 +59,7 @@ function drawFloor(){
 function cactusLogic(){
   if(cactus.x < -100){
     cactus.x = width + 50;
+    level.score++;
   } else {
     cactus.x -= level.speed;
   }
@@ -86,7 +87,16 @@ function floorLogic(){
 document.addEventListener('keydown', function(event){
   if (event.keyCode == 32){
     console.log("jump");
-    toJump();
+    if (level.died == false){
+      toJump();
+    } else {
+      level.speed = 9;
+      cloud.speed = 2;
+      cloud.x = width + 100;
+      cactus.x = width + 100;
+      level.score = 0;
+      level.died = false;
+    }
   }
 })
 
@@ -119,6 +129,16 @@ function collision(){
      }
 }
 
+function score (){
+  ctx.font = "30px impact";
+  ctx.fillStyle = "#555555";
+  ctx.fillText(`${level.score}`, 600, 50);
+
+  if (level.died == true){
+    ctx.font = "60px impact";
+    ctx.fillText ("GAME OVER", 240, 150);
+  }
+}
 
 //Bucle principal
 var FPS = 50 //frames por segundo
@@ -138,4 +158,5 @@ function principal(){
   drawCactus();
   drawCloud();
   drawRex();
+  score();
 }
